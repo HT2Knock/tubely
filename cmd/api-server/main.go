@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/caarlos0/env/v11"
 	"github.com/joho/godotenv"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 type config struct {
@@ -22,25 +23,27 @@ type config struct {
 }
 
 func main() {
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+
 	if err := godotenv.Load(".env"); err != nil {
-		log.Println("Missing .env file")
+		log.Warn().Err(err).Msg("")
 	}
 
 	var cfg config
 	if err := env.Parse(&cfg); err != nil {
-		log.Fatal("Failed to parse env vars")
+		log.Error().Err(err).Msg("Failed to parse env vars")
 	}
 
 	err := cfg.ensureAssetsDir()
 	if err != nil {
-		log.Fatalf("Couldn't create assets directory: %v", err)
+		log.Error().Err(err).Msg("Couldn't create assets directory")
 	}
 
 	server := NewServer(&cfg)
 
-	log.Printf("Serving on: http://localhost:%s/app/\n", cfg.Port)
+	log.Info().Str("port", cfg.Port).Msg("Serving on: http://localhost:%s/app/")
 	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
-		panic(fmt.Sprintf("http server error: %s", err))
+		log.Panic().Msg(fmt.Sprintf("http server error: %s", err))
 	}
 }
