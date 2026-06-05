@@ -6,6 +6,7 @@ import (
 
 	"github.com/T2Knock/tubely/internal/auth"
 	"github.com/T2Knock/tubely/internal/database"
+	"github.com/google/uuid"
 )
 
 func (s *Server) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +34,8 @@ func (s *Server) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := s.db.CreateUser(database.CreateUserParams{
+	user, err := s.db.CreateUser(r.Context(), database.CreateUserParams{
+		ID:       uuid.New(),
 		Email:    params.Email,
 		Password: hashedPassword,
 	})
@@ -42,5 +44,6 @@ func (s *Server) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	user.Password = ""
 	respondWithJSON(w, http.StatusCreated, user)
 }

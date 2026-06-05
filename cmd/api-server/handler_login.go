@@ -28,7 +28,7 @@ func (s *Server) handlerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := s.db.GetUserByEmail(params.Email)
+	user, err := s.db.GetUserByEmail(r.Context(), params.Email)
 	if err != nil {
 		respondWithError(w, http.StatusUnauthorized, "Incorrect email or password", err)
 		return
@@ -60,7 +60,7 @@ func (s *Server) handlerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = s.db.CreateRefreshToken(database.CreateRefreshTokenParams{
+	_, err = s.db.CreateRefreshToken(r.Context(), database.CreateRefreshTokenParams{
 		UserID:    user.ID,
 		Token:     refreshToken,
 		ExpiresAt: time.Now().UTC().Add(time.Hour * 24 * 60),
@@ -70,6 +70,7 @@ func (s *Server) handlerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	user.Password = ""
 	respondWithJSON(w, http.StatusOK, response{
 		User:         user,
 		Token:        accessToken,

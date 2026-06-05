@@ -33,8 +33,9 @@ func (s *Server) handlerVideoMetaCreate(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	params.UserID = userID
+	params.ID = uuid.New()
 
-	video, err := s.db.CreateVideo(params.CreateVideoParams)
+	video, err := s.db.CreateVideo(r.Context(), params.CreateVideoParams)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't create video", err)
 		return
@@ -62,7 +63,7 @@ func (s *Server) handlerVideoMetaDelete(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	video, err := s.db.GetVideo(videoID)
+	video, err := s.db.GetVideo(r.Context(), videoID)
 	if err != nil {
 		respondWithError(w, http.StatusNotFound, "Couldn't get video", err)
 		return
@@ -72,7 +73,7 @@ func (s *Server) handlerVideoMetaDelete(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	err = s.db.DeleteVideo(videoID)
+	err = s.db.DeleteVideo(r.Context(), videoID)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't delete video", err)
 		return
@@ -89,7 +90,7 @@ func (s *Server) handlerVideoGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	video, err := s.db.GetVideo(videoID)
+	video, err := s.db.GetVideo(r.Context(), videoID)
 	if err != nil {
 		respondWithError(w, http.StatusNotFound, "Couldn't get video", err)
 		return
@@ -110,7 +111,7 @@ func (s *Server) handlerVideosRetrieve(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	videos, err := s.db.GetVideos(userID)
+	videos, err := s.db.GetVideos(r.Context(), userID)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't retrieve videos", err)
 		return

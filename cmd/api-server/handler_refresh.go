@@ -18,7 +18,7 @@ func (s *Server) handlerRefresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := s.db.GetUserByRefreshToken(refreshToken)
+	user, err := s.db.GetUserByRefreshToken(r.Context(), refreshToken)
 	if err != nil {
 		respondWithError(w, http.StatusUnauthorized, "Couldn't get user for refresh token", err)
 		return
@@ -46,7 +46,7 @@ func (s *Server) handlerRevoke(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = s.db.RevokeRefreshToken(refreshToken)
+	err = s.db.RevokeRefreshToken(r.Context(), refreshToken)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't revoke session", err)
 		return
