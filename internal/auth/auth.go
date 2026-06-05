@@ -1,3 +1,4 @@
+// Package auth handle basic authentication
 package auth
 
 import (

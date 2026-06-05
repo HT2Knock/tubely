@@ -1,3 +1,4 @@
+// Package database provide interaction with database
 package database
 
 import (
@@ -22,7 +23,6 @@ func NewClient(pathToDB string) (Client, error) {
 		return Client{}, err
 	}
 	return c, nil
-
 }
 
 func (c *Client) autoMigrate() error {
