@@ -41,7 +41,7 @@ func main() {
 
 	server := NewServer(&cfg)
 
-	log.Info().Str("port", cfg.Port).Msg("Serving on: http://localhost:%s/app/")
+	log.Info().Msgf("Serving on: http://localhost:%s/app/", cfg.Port)
 	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		log.Panic().Msg(fmt.Sprintf("http server error: %s", err))
