@@ -8,16 +8,16 @@ import (
 )
 
 type RefreshToken struct {
-	CreateRefreshTokenParams
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
 	RevokedAt *time.Time `json:"revoked_at"`
+	CreateRefreshTokenParams
 }
 
 type CreateRefreshTokenParams struct {
+	ExpiresAt time.Time `json:"expires_at"`
 	Token     string    `json:"token"`
 	UserID    uuid.UUID `json:"user_id"`
-	ExpiresAt time.Time `json:"expires_at"`
 }
 
 func (c Client) CreateRefreshToken(params CreateRefreshTokenParams) (RefreshToken, error) {
