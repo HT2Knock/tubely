@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/bootdotdev/learn-file-storage-s3-golang-starter/internal/database"
+	"github.com/T2Knock/tubely/internal/database"
 	"github.com/google/uuid"
 
 	"github.com/joho/godotenv"
@@ -25,14 +25,16 @@ type apiConfig struct {
 }
 
 type thumbnail struct {
-	data      []byte
 	mediaType string
+	data      []byte
 }
 
 var videoThumbnails = map[uuid.UUID]thumbnail{}
 
 func main() {
-	godotenv.Load(".env")
+	if err := godotenv.Load(".env"); err != nil {
+		log.Fatal("Missing .env file")
+	}
 
 	pathToDB := os.Getenv("DB_PATH")
 	if pathToDB == "" {
