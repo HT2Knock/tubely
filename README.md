@@ -52,7 +52,7 @@ Copy the `.env.example` file to `.env` and fill in the values.
 cp .env.example .env
 ```
 
-You'll need to update values in the `.env` file to match your configuration, but _you won't need to do anything here until the course tells you to_.
+You'll need to update values in the `.env` file to match your configuration, but *you won't need to do anything here until the course tells you to*.
 
 ## 3. Run the Server
 

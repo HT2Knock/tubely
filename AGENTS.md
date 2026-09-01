@@ -9,16 +9,16 @@ cp .env.example .env       # edit as needed
 go run .                    # runs cmd/api-server, serves on :8091
 ```
 
-Open http://localhost:8091/app/ — frontend at `/app/`, API at `/api/`.
+Open <http://localhost:8091/app/> — frontend at `/app/`, API at `/api/`.
 
 ## Key commands
 
-| Action | Command |
-|---|---|
-| Run dev server | `go run .` (or `go run ./cmd/api-server/`) |
-| Build | `go build ./...` |
+| Action          | Command                                                                                    |
+| --------------- | ------------------------------------------------------------------------------------------ |
+| Run dev server  | `go run .` (or `go run ./cmd/api-server/`)                                                 |
+| Build           | `go build ./...`                                                                           |
 | Regenerate sqlc | `sqlc generate` (config: `sqlc.yaml`, input: `sql/queries/`, output: `internal/database/`) |
-| Reset DB | `POST /admin/reset` when `PLATFORM=dev` |
+| Reset DB        | `POST /admin/reset` when `PLATFORM=dev`                                                    |
 
 No tests, linters, CI, or Makefile exist.
 

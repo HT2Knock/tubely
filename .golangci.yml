@@ -1,0 +1,32 @@
+version: "2"
+
+run:
+  timeout: 3m
+
+linters:
+  default: none
+  enable:
+    - errcheck # unchecked errors
+    - govet # go vet checks
+    - ineffassign # detect ineffectual assignments
+    - staticcheck # SA/S/QF checks (covers gosimple, stylecheck, unused)
+    - bodyclose # HTTP response body not closed
+    - nilerr # return nil where err variable is nil
+    - gosec # security checks
+    - gocyclo
+    - unused
+    - gocritic
+  settings:
+    gocyclo:
+      min-complexity: 15
+  exclusions:
+    rules:
+      # errcheck and gosec produce too many false positives in test files
+      - path: '(.+)_test\.go'
+        linters:
+          - errcheck
+          - gosec
+
+formatters:
+  enable:
+    - gofumpt
